@@ -1,0 +1,19 @@
+ajax Call:
+
+                var deptId = $("#DepartmentId").val();
+                var json = { departmentId: deptId, };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetClassScheduleByDepartment", "ClassRoom")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        $.each(data, function (key, value) {
+                            key ++;
+                            $("#SchduleTable tbody").append('<tr><td>' + key + '</td><td>' + value.CourseCode + '</td><td>' + value.CourseName + '</td><td>' + value.ScheduleInfo + '</td></tr>');
+                        });
+                    }
+                });
+
+
+

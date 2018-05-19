@@ -1,0 +1,48 @@
+Send Email Notification..................
+
+        public bool SendEmail(string toEmail, string subject, string emailBody)
+        {
+
+            try
+            {
+                string senderEmail = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"].ToString();
+                string senderPassword = System.Configuration.ConfigurationManager.AppSettings["SenderPassword"].ToString();
+
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                MailMessage mailMessage = new MailMessage(senderEmail, toEmail, subject, emailBody);
+
+                mailMessage.IsBodyHtml = true;
+                mailMessage.BodyEncoding = UTF8Encoding.UTF8;
+                client.Send(mailMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+..................
+
+                List<SubmitedApplicationInfo> userEmail = adminManager.GetUserEmail(id);
+                bool result = adminManager.SendEmail(userEmail[0].Email, "About your leave application",
+                    "<p>Hello '" + userEmail[0].EmployeeName + "' <br/>Your Leave Application start date '" +
+                    userEmail[0].StartDate + "' and end date '" + userEmail[0].EndDate + "', entry date " +
+                    userEmail[0].EntryDate + " are Approved by HR Admin<br/>Thank You<br/>PBL-001</p>");
+
+......................................
+
+  <appSettings>
+
+    
+  
+    <add key="SenderEmail" value="pbl1learning@gmail.com" />
+    <add key="SenderPassword" value="Pbl1learning#" />
+    
+  
+  </appSettings>

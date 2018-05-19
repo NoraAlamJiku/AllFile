@@ -1,0 +1,105 @@
+        public bool IsCodeExist(string code)
+        {
+            bool isExists = false;
+
+            Query = "SELECT Code FROM Departments WHERE Code= @Code ";
+            Command = new SqlCommand(Query, Connection);
+
+            Command.Parameters.Clear();
+
+            Command.Parameters.Add("@Code", SqlDbType.VarChar).Value = code;
+            Connection.Open();
+            Reader = Command.ExecuteReader();
+            if (Reader.Read())
+            {
+                isExists = true;
+            }
+            Connection.Close();
+            Reader.Close();
+            return isExists;
+        }
+
+
+
+
+
+        public bool IsNameExist(string name)
+        {
+            bool isExists = false;
+
+            Query = "SELECT Name FROM Departments WHERE Name= @Name ";
+            Command = new SqlCommand(Query, Connection);
+
+            Command.Parameters.Clear();
+
+            Command.Parameters.Add("@Name", SqlDbType.VarChar).Value = name;
+            Connection.Open();
+            Reader = Command.ExecuteReader();
+            if (Reader.Read())
+            {
+                isExists = true;
+            }
+            Connection.Close();
+            Reader.Close();
+            return isExists;
+        }
+
+
+
+        public JsonResult IsCodeExists(string code)
+        {
+            bool isCodeExists = aManager.IsCodeExist(code);
+
+            if (isCodeExists)
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public JsonResult IsNameExists(string name)
+        {
+            bool isNameExists = aManager.IsNameExist(name);
+
+            if (isNameExists)
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public bool IsCodeExist(string code)
+        {
+            bool isExists = false;
+
+           var Query = db.Teachers.Where(x=>x.Email== code);
+ 
+            if (Query != null)
+            {
+                isExists = true;
+            }
+            return isExists;
+        }

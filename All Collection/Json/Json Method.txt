@@ -1,0 +1,17 @@
+Json :
+
+
+        public JsonResult GetCoursesByDepartmentId(int departmentId)
+        {
+            IEnumerable<Course> courses = courseManager.GetAll;
+            var courseList = courses.ToList().FindAll(c => c.DepartmentId == departmentId);
+            return Json(courseList, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetCoursesByDepartmentId(int departmentId)
+        {
+            
+            var courseList = db.courses.ToList().FindAll(c => c.DepartmentId == departmentId);
+            return Json(courseList, JsonRequestBehavior.AllowGet);
+        }

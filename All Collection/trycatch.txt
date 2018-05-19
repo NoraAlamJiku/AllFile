@@ -1,0 +1,31 @@
+           try
+           {
+               Query = "SELECT * FROM t_Departments WHERE Code=@code";
+               Command = new SqlCommand(Query, Connection);
+
+               Command.Parameters.Clear();
+               Command.Parameters.AddWithValue("@code", code);
+               Department department = null;
+               Connection.Open();
+               DataReader = Command.ExecuteReader();
+               if (DataReader.Read())
+               {
+                   department = new Department
+                   {
+                       Id = Convert.ToInt32(DataReader["Id"].ToString()),
+                       Name = DataReader["Name"].ToString(),
+                       Code = DataReader["Code"].ToString()
+                   };
+
+               }
+               DataReader.Close();
+               return department;
+           }
+           catch (Exception exception)
+           {
+               throw new Exception("Unable to connect department", exception);
+           }
+           finally
+           {
+               Connection.Close();
+           }

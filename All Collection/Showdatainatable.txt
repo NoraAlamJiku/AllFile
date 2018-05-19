@@ -1,0 +1,98 @@
+<h1> View Course Statics</h1>
+<form method="POST" id="myForm">
+    <hr/>
+    <table>
+        <tr>
+            <td>
+                <label for="departmentId">Select Department</label>
+            </td>
+            <td>
+                <select name="departmentId" id="departmentId">
+                    <option value="">--Select--</option>
+                    @foreach (var department in ViewBag.departments)
+                    {
+                        <option value="@department.Id">@department.Name</option>
+                    }
+                </select>
+            </td>
+        </tr>
+
+    </table>
+    <table class="table table-striped table-bordered" id="StudentTable">
+        <h2>Course Information </h2>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name / Titel</th>
+                <th>Semester </th>
+                <th>Assign To</th>
+            </tr>
+        </thead>
+        <tbody id="StudentTableBody"></tbody>
+    </table>
+</form>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(document).ready(function () {
+        $("#departmentId").on('change', function () {
+            //alert('test');
+            var departmentId = $('#departmentId option:selected').val();
+            //alert(Department);
+            $.ajax({
+                type: 'GET',
+                data: { departmentId: departmentId },
+                url: '@Url.Action("GetNameByRegNo", "Courses")',
+                success: function (result) {
+                    alert(result[0].SemesterId);
+                    $.each(result, function (key, value) {
+                       // alert(value.Id);
+                       // $("#studentId").append('<option value=' + value.StudentId + '>' + value.Name + '</option>');
+                        $("#StudentTableBody").append('<tr><td>' + value.Code + '</td><td>' + value.Name + '</td><td>' + value.SemesterId + '</td><td>' + value.Name + '</td></tr>');
+                    });
+              
+                   // $('#Name').val(result[0].Name);
+
+                }
+
+            });
+        });
+    });
+    </script>
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public JsonResult GetNameByRegNo(int departmentId)
+        {
+            return
+                Json(
+                    db.Courses.Include(s => s.AssignToTeachers).Where(s => s.DepartmentId == departmentId)
+                        .Select(s => new { Id = s.Id, Name = s.Name, Code = s.Code, SemesterId = s.SemesterId })
+                        .ToList(), JsonRequestBehavior.AllowGet);
+        }

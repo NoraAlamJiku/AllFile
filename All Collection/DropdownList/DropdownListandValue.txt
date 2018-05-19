@@ -1,0 +1,22 @@
+Dropdown List:
+
+
+ @Html.DropDownList("RegisterStudentId", null, htmlAttributes: new { @class = "form-control" })
+
+
+Dropdown List1:
+
+                <select name="RegisterStudentId" id="RegisterStudentId" class="form-control">
+                    <option value="">--Select--</option>
+                    @foreach (var department in ViewBag.departments)
+                    {
+                        <option value="@department.Id">@department.RegNo</option>
+                    }
+                </select>
+
+
+Dropdown value: 
+
+ ViewBag.departments = db.RegisterStudents.ToList();
+
+
